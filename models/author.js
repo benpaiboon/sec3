@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-mongoose.Promise = global.Promise;
 
 const AuthorSchema = new Schema({
   first_name: String,
@@ -14,4 +13,4 @@ const AuthorSchema = new Schema({
 
 const Author = mongoose.model('author', AuthorSchema);
 
-module.exports = AuthorSchema;
+module.exports = Author;

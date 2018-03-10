@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-mongoose.Promise = global.Promise;
+const AuthorSchema = require('./author');
+const Schema = mongoose.Schema; 
 
 const BookSchema = new Schema({
-  title: String,
+  title: {
+    type: String,
+    required: [true,'Title field is required']
+  },
   author: String,
   summary: String,
   ISBN: String,

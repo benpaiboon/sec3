@@ -3,33 +3,26 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const fs = require('fs');
 
 // Config
 const Host = require('./configs/host/host');
-const Mongo = require('./configs/db/mlab');
+const MongoDB = require('./configs/db/openConnection');
 
 // Connect MongoDB
-mongoose.Promise = global.Promise;
-mongoose.connect(Mongo.uri);
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-  console.log('we are connected');
-});
+MongoDB.openConnection;
 
 //Init Middleware
-app.use(cors()); 
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// API
-app.use('/api', require(`./routes/book`));
-
-// Error Handling
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(422).send({err: err.message});
+// APIs
+const routesFolder = './routes/';
+fs.readdir(routesFolder, (err, routeFiles) => {
+  routeFiles.forEach(routePaths => {
+    app.use('/api', require(`./routes/${routePaths}`));
+  });
 });
 
 // Running Server
