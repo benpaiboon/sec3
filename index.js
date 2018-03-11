@@ -6,8 +6,8 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 
 // Config
-const Host = require('./configs/host/host');
-const MongoDB = require('./configs/db/openConnection');
+const Host = require('./app/configs/host/host');
+const MongoDB = require('./app/configs/db/openConnection');
 
 // Connect MongoDB
 MongoDB.openConnection;
@@ -18,10 +18,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // APIs
-const routesFolder = './routes/';
-fs.readdir(routesFolder, (err, routeFiles) => {
+// const routesFolder = './app/routes/';
+fs.readdir('app/routes', (err, routeFiles) => {
   routeFiles.forEach(routePaths => {
-    app.use('/api', require(`./routes/${routePaths}`));
+    app.use('/api', require(`./app/routes/${routePaths}`));
   });
 });
 
