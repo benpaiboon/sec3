@@ -7,7 +7,7 @@ const fs = require('fs');
 
 // Config
 const Host = require('./app/configs/host/host');
-const MongoDB = require('./app/configs/db/openConnection');
+const MongoDB = require('./app/configs/db/mlab');
 
 // Connect MongoDB
 MongoDB.openConnection;
@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // APIs
-// const routesFolder = './app/routes/';
 fs.readdir('app/routes', (err, routeFiles) => {
   routeFiles.forEach(routePaths => {
     app.use('/api', require(`./app/routes/${routePaths}`));
