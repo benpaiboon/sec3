@@ -1,3 +1,3 @@
-const url = '/api';
+const url = '/';
 
 module.exports = url;

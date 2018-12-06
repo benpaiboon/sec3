@@ -1,32 +1,32 @@
-const express = require('express');
-const router = express.Router();
-const Book = require('../models/book');
+// Init Book Model
+const Book = require('../models/bookModel');
 
-router.get('/books', async (req, res) => {
+// Route Functions
+const getBooks = async (req, res) => {
   try {
     res.send(await Book.find({}));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
+}
 
-router.get('/books/:id', async (req, res) => {
+const getBookById = async (req, res) => {
   try {
     res.send(await Book.findById({ _id: req.params.id }));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
+};
 
-router.post('/books', async (req, res) => {
+const createBook = async (req, res) => {
   try {
     res.send(await Book.create(req.body));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
+};
 
-router.put('/books/:id', async (req, res) => {
+const updateBookById = async (req, res) => {
   try {
     res.send(await Book.findByIdAndUpdate({ _id: req.params.id }, req.body, (error) => {
       if (error) res.status(500).json({ error: error.message });
@@ -35,14 +35,20 @@ router.put('/books/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
+};
 
-router.delete('/books/:id', async (req, res) => {
+const removeBookById = async (req, res) => {
   try {
     res.send(await Book.findByIdAndRemove({ _id: req.params.id }));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  getBooks,
+  getBookById,
+  createBook,
+  updateBookById,
+  removeBookById
+}

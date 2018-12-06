@@ -18,34 +18,19 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// APIs
+// Index Route
+app.get(`${BaseUrl}`, (req, res) => {
+  res.redirect('/books');
+});
+
+// Request Any Routes depend on URL path
 fs.readdir('app/routes', (err, routeFiles) => {
   routeFiles.forEach(routePaths => {
-    console.log(routePaths);
-    // Check request path
-    app.use(`${BaseUrl}`, (req, res, next) => {
-      let reqPath = req.path;
-      reqPath = reqPath.substr(1);
-      if (reqPath.indexOf('/') !== -1) {
-        reqPath = reqPath.substring(0, reqPath.indexOf('/'));
-      }
-
-      let internalPath = routePaths.substring(0, routePaths.indexOf('.'));
-      console.log('req', reqPath);
-      console.log('in', internalPath);
-      if (reqPath !== internalPath) {
-        res.json({ message: 'Request url not found.' });
-      } else {
-        next();
-      }
-    });
-
-    // Right API Path
     app.use(`${BaseUrl}`, require(`./app/routes/${routePaths}`));
   });
 });
 
 // Running Server
 app.listen(Host.port, () => {
-  console.log(`API running on ${Host.hostname}:${Host.port}${BaseUrl}/<route>`);
+  console.log(`API running on ${Host.hostname}:${Host.port}${BaseUrl}<route>`);
 });
